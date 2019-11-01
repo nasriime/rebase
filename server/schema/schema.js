@@ -1,19 +1,15 @@
 const graphql = require('graphql');
 const _ = require('lodash');
+const Item = require('../models/item');
 
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
-    GraphQLList
+    GraphQLList,
+    GraphQLNonNull
 } = graphql;
-
-let items = [
-    { name: 'Name of the Wind', type: 'Fantasy', price: '', photo: '', id: '1' },
-    { name: 'The Final Empire', type: 'Fantasy', price: '', photo: '', id: '2' },
-    { name: 'The Long Earth', type: 'Sci-Fi', price: '', photo: '', id: '3' },
-];
 
 const ItemType = new GraphQLObjectType({
     name: 'Item',
@@ -33,18 +29,43 @@ const RootQuery = new GraphQLObjectType({
             type: ItemType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args){
-                return _.find(items, { id: args.id });
+                return Item.findById(args.id);
             }
         },
         items: {
             type: new GraphQLList(ItemType),
             resolve(parent, args){
-                return items;
+                return Item.find({});
             }
         },
     }
 });
 
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addItem: {
+            type: ItemType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                type:  { type: new GraphQLNonNull(GraphQLString) },
+                price:  { type: new GraphQLNonNull(GraphQLString) },
+                photo:  { type: new GraphQLNonNull(GraphQLString) },
+            },
+            resolve(parent, args){
+                let item = new Item({
+                    name: args.name,
+                    type: args.type,
+                    price: args.price,
+                    photo: args.photo
+                });
+                return item.save();
+            }
+        }
+    }
+});
+
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 });
