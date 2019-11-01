@@ -1,11 +1,15 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 const AWS = require('aws-sdk');
-const { GraphQLUpload } = 'graphql-upload';
+const { GraphQLUpload } = require('graphql-upload');
 const fs = require('fs')
 const Item = require('../models/item');
 
-AWS.config.loadFromPath('../credentials.json');
+// AWS.config.loadFromPath('../credentials.json');
+AWS.config = new AWS.Config();
+AWS.config.accessKeyId = "AKIARJU5WAN6N3KJ4NHK";
+AWS.config.secretAccessKey = "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";
+AWS.config.region = "eu-west-2";
 
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
@@ -81,7 +85,7 @@ const Mutation = new GraphQLObjectType({
         singleUpload:{
             type: FileType,
             args:{
-                file :{ type: GraphQLUpload}
+                file: { type: GraphQLUpload}
             },
             resolve(parent, args){
                 return args.file.then(file => {
@@ -98,7 +102,7 @@ const Mutation = new GraphQLObjectType({
         singleUploadStream:{
             type: FileType,
             args:{
-                file :{ type: GraphQLUpload}
+                file: { type: GraphQLUpload}
             },
             async resolve(parent, args){
                 const file = await args.file

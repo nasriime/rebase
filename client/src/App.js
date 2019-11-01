@@ -1,13 +1,14 @@
 import React from 'react';
 import{BrowserRouter as Router, Route} from 'react-router-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
+import ApolloClient from 'apollo-boost';
 
 import './App.scss';
-import Menu from 'components/Menu';
-import AddMenuItem from 'components/AddMenuItem';
+import Menu from './components/Menu';
+import AddMenuItem from './components/AddMenuItem';
 
 const client = new ApolloClient({
-  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  uri: 'http://localhost:4000/graphql',
 });
 
 function App() {
