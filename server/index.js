@@ -1,22 +1,14 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
-const schema = require('./schema/schema');
+const { ApolloServer } = require('apollo-server');
 const mongoose = require('mongoose');
-const cors = require('cors');
-
-const app = express();
-app.use(cors());
+const schema = require('./graph');
 
 mongoose.connect('mongodb://nasr:nasr123@ds141178.mlab.com:41178/rebase-menu',{ useNewUrlParser: true })
 mongoose.connection.once('open', () => {
     console.log('conneted to database');
 });
 
-app.use('/graphql', graphqlHTTP({
-    schema,
-    graphiql: true
-}));
+const server = new ApolloServer(schema);
 
-app.listen(4000, () => {
-    console.log('now listening for requests on port 4000');
+server.listen().then(({ url }) => {
+  console.log(`Server ready at ${url}`);
 });
