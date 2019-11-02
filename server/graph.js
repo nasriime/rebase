@@ -29,16 +29,26 @@ const typeDefs = gql`
   }
   
   type Query {
-    _ : Boolean
+    items: [Item],
+    item(id: ID!): Item
   }
   
   type Mutation {
     singleUpload(file: Upload!): File!,
-    singleUploadStream(file: Upload!): File!
+    singleUploadStream(file: Upload!): File!,
+    addItem(name: String!, type: String!, price: String!, photo: String!): Item!
   }
 `;
 
 const resolvers = {
+  Query: {
+    items: () => {
+      return Item.find({});
+    },
+    item:(parent, args)=>{
+      return Item.findById(args.id);
+    }
+  },
   Mutation: {
     singleUpload: (parent, args) => {
       return args.file.then(file => {
@@ -63,6 +73,15 @@ const resolvers = {
 
 
       return file;
+    },
+    addItem: (parent,args)=> {
+      let item = new Item({
+        name: args.name,
+        type: args.type,
+        price: args.price,
+        photo: args.photo
+    });
+    return item.save();
     }
   },
 };
