@@ -1,11 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createUploadLink } from 'apollo-upload-client'
 import {ApolloClient} from "apollo-client"
 import {ApolloProvider, Mutation} from "react-apollo"
 import gql from "graphql-tag"
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Menu from './components/Home';
+import AddMenuItem from './components/AddMenuItem';
+
 
 const apolloCache = new InMemoryCache()
 
@@ -44,6 +46,10 @@ const UPLOAD_FILE_STREAM = gql`
 
 function App() {
   return (
+    // <Router>
+    //   <Route exact path="/" component={Menu} />
+    //   <Route path="/add" component={AddMenuItem} />
+    // </Router>
     <div className="App">
       <ApolloProvider client={client}>
         <header className="App-header">
