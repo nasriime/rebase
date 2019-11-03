@@ -25,7 +25,6 @@ const UPLOAD_FILE_STREAM = gql`
 const AddMenuItem =()=>{
     return (
         <div>
-            <img src={logo} className="App-logo" alt="logo" />
             <h2>Save Local</h2>
             <Mutation mutation={UPLOAD_FILE}>
                 {(singleUpload, { data, loading }) => {

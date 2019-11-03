@@ -4,7 +4,7 @@ import { createUploadLink } from 'apollo-upload-client'
 import { ApolloClient } from "apollo-client"
 import { ApolloProvider } from "react-apollo"
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Menu from './components/Home';
+import Menu from './components/Menu';
 import AddMenuItem from './components/AddMenuItem';
 
 
