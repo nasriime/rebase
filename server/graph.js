@@ -66,7 +66,13 @@ const resolvers = {
       const {createReadStream, filename, mimetype} = file
       const fileStream = createReadStream()
 
-      const uploadParams = {Bucket: 'cafe-react-test', Key: filename, Body: fileStream};
+      const uploadParams = {
+        Bucket: 'cafe-react-test', 
+        Key: filename, 
+        Body: fileStream,
+        contentType: mimetype,
+        ACL: "public-read"
+      };
       const result = await s3.upload(uploadParams).promise()
 
       console.log(result)
