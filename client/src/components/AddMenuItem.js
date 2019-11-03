@@ -1,16 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {Mutation} from "react-apollo"
-import gql from "graphql-tag"
-
-const UPLOAD_FILE = gql`
-  mutation SingleUpload($file: Upload!) {
-    singleUpload(file: $file) {
-      filename
-      mimetype
-      encoding
-    }
-  }
-`;
+import {Mutation} from "react-apollo";
+import gql from "graphql-tag";
+import useForm from 'react-hook-form';
 
 const UPLOAD_FILE_STREAM = gql`
   mutation SingleUploadStream($file: Upload!) {
@@ -22,31 +13,87 @@ const UPLOAD_FILE_STREAM = gql`
   }
 `;
 
+const ADD_ITEM = gql`
+  mutation AddItem($name: String!, $type: String!, $price: String!, $photo: String!){
+    addItem(name: $name, type: $type, price: $price, photo: $photo){
+      id
+      name
+      type
+      price
+      photo
+    }
+  }
+`;
+
 const AddMenuItem =()=>{
+  const { register, handleSubmit, watch, errors } = useForm();
+
+  const onSubmit = data => { console.log(data) }
+
     return (
-        <div>
-            <h2>Save Local</h2>
-            <Mutation mutation={UPLOAD_FILE}>
-                {(singleUpload, { data, loading }) => {
-                    console.log(data)
-                    return (<form onSubmit={() => {console.log("Submitted")}} encType={'multipart/form-data'}>
-                                <input name={'document'} type={'file'} onChange={({target: { files }}) => {
-                                    const file = files[0]
-                                    file && singleUpload({ variables: { file: file } })
-                                }}/>{loading && <p>Loading.....</p>}</form>)}
-                }
-            </Mutation>
-            <h2>Stream to Server</h2>
-            <Mutation mutation={UPLOAD_FILE_STREAM}>
-                {(singleUploadStream, { data, loading }) => {
-                    console.log(data)
-                    return (<form onSubmit={() => {console.log("Submitted")}} encType={'multipart/form-data'}>
-                                <input name={'document'} type={'file'} onChange={({target: { files }}) => {
-                                    const file = files[0]
-                                    file && singleUploadStream({ variables: { file: file } })
-                                }}/>{loading && <p>Loading.....</p>}</form>)}
-                }
-            </Mutation>
+        <div className="container">
+          <h2>Add menu item</h2>
+          <Mutation mutation={UPLOAD_FILE_STREAM}>
+            {
+              (singleUploadStream, { data, loading }) => {
+                console.log(data)
+                return (
+                  <form onSubmit={handleSubmit(onSubmit)} encType={'multipart/form-data'}>
+                    <select  name="type" ref={register({ required: true })}>
+                      <option value="main">Main</option>
+                      <option value="side">Side</option>
+                    </select>
+                    {errors.type &&
+                        errors.type.type === "required" &&
+                        <div>This field is required</div>}
+
+
+                    <input 
+                      type="text" 
+                      name="name" 
+                      value={name}
+                      ref={register({ required: true, maxLength: 50 })}
+                      placeholder="" />
+                      {errors.name &&
+                        errors.name.type === "required" &&
+                        <div>This field is required</div>}
+                      {errors.name &&
+                        errors.name.type === "maxLength" &&
+                        <div>Your input exceed 50 charcter length</div>}     
+
+
+                    <input 
+                      type="number" 
+                      name="price" 
+                      value={price}
+                      ref={register({ required: true ,pattern: /\d+/ })}
+                      placeholder="" />
+                       {errors.price &&
+                        errors.price.type === "required" &&
+                        <div>This field is required</div>}
+                      {errors.price &&
+                        errors.price.type === "pattern" &&
+                        <div>Enter numbers only</div>}
+
+
+                    <input name={'document'} type={'file'} 
+                      ref={register({ required: true })}
+                      onChange={
+                        ({target: { files }}) => {
+                          const file = files[0]
+                          file && singleUploadStream({ variables: { file: file } })
+                        }
+                      }/>
+                      {loading && <p>Loading.....</p>}
+                      {errors.document &&
+                        errors.document.type === "required" &&
+                        <div>This field is required</div>}
+
+                    <button disable={!!errors.length} type="submit">Save item</button>
+                  </form>
+                )}
+            }
+          </Mutation>
         </div>
     )
 }

@@ -11,7 +11,7 @@ import AddMenuItem from './components/AddMenuItem';
 const apolloCache = new InMemoryCache()
 
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:4000', // Apollo Server is served from port 4000
+  uri: 'http://localhost:4000',
   headers: {
     "keep-alive": "true"
   }
