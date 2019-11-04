@@ -56,58 +56,76 @@ const AddMenuItem =withRouter(({history})=>{
 
     return (
         <div className="container">
-            <h2>Add menu item</h2>
+            <h4 className="mb-4">Add menu item</h4>
             
             <form onSubmit={handleSubmit(onSubmit)} encType={'multipart/form-data'}>
-                <select  name="type" ref={register({ required: true })}>
-                    <option value="Main">Main</option>
-                    <option value="Side">Side</option>
-                </select>
-                {errors.type &&
-                    errors.type.type === "required" &&
-                    <div>This field is required</div>}
+                <div className="form-group row">
+                  <label HtmlFor="type" className="col-sm-2 col-form-label">Type</label>
+                  <div className="col-sm-6"> 
+                    <select  name="type" id="type" class="custom-select" ref={register({ required: true })}>
+                      <option selected>Choose...</option>
+                      <option value="Main">Main</option>
+                      <option value="Side">Side</option>
+                    </select>
+                    {errors.type &&
+                      errors.type.type === "required" &&
+                      <div className="text-danger">This field is required</div>}
+                  </div>
+                </div>
+                
+
+                <div className="form-group row">
+                    <label HtmlFor="name" className="col-sm-2 col-form-label">Name</label>
+                    <div className="col-sm-6">
+                      <input type="text" className="form-control"  name="name" 
+                          ref={register({ required: true, maxLength: 50 })} id="name" placeholder="" />
+                      {errors.name &&
+                        errors.name.type === "required" &&
+                        <div className="text-danger">This field is required</div>}
+                      {errors.name &&
+                        errors.name.type === "maxLength" &&
+                        <div className="text-danger">Your input exceed 50 charcter length</div>}  
+                    </div>
+                </div>
+              
 
 
-                <input 
-                    type="text" 
-                    name="name" 
-                    ref={register({ required: true, maxLength: 50 })}
-                    placeholder="" />
-                {errors.name &&
-                errors.name.type === "required" &&
-                <div>This field is required</div>}
-                {errors.name &&
-                errors.name.type === "maxLength" &&
-                <div>Your input exceed 50 charcter length</div>}     
+                <div className="form-group row">
+                    <label HtmlFor="price" className="col-sm-2 col-form-label">Price</label>
+                    <div className="col-sm-6">
+                      <input type="number" className="form-control"  name="price" 
+                          ref={register({ required: true ,pattern: /\d+/ })} id="price" placeholder="" />
+                    {errors.price &&
+                      errors.price.type === "required" &&
+                      <div className="text-danger mt-1">This field is required</div>}
+                    {errors.price &&
+                      errors.price.type === "pattern" &&
+                      <div className="text-danger mt-1">Enter numbers only</div>}
+                    </div>
+                </div>
+              
 
-
-                <input 
-                    type="number" 
-                    name="price" 
-                    ref={register({ required: true ,pattern: /\d+/ })}
-                    placeholder="" />
-                {errors.price &&
-                errors.price.type === "required" &&
-                <div>This field is required</div>}
-                {errors.price &&
-                errors.price.type === "pattern" &&
-                <div>Enter numbers only</div>}
-
-
-                <input name={'document'} type={'file'} 
-                    ref={register({ required: true })}
-                    onChange={
-                    ({target: { files }}) => {
-                        const file = files[0]
-                        file && singleUploadStream({ variables: { file: file } })
-                    }
-                    }/>
-                {loading && <p>Loading.....</p>}
-                {errors.document &&
-                errors.document.type === "required" &&
-                <div>This field is required</div>}
-
-                <button type="submit" disabled={loading}>Save item</button>
+                <div className="form-group row">
+                  <label HtmlFor="document" className="col-sm-2 col-form-label">Photo</label>
+                  <div className="col-sm-6">
+                    <label className="btn btn-primary">
+                      Choose photo<input type="file" className="form-control"  name="document"
+                        onChange={
+                          ({target: { files }}) => {
+                              const file = files[0]
+                              file && singleUploadStream({ variables: { file: file } })
+                          }
+                        }
+                        ref={register({ required: true })} id="document" hidden/>
+                    </label>
+                    {errors.document &&
+                      errors.document.type === "required" &&
+                      <div className="text-danger mt-1">This field is required</div>}
+                      {loading && <p>Loading.....</p>}
+                  </div>
+                </div>
+                
+                <button type="submit" className="btn btn-primary" disabled={loading}>Save item</button>
             </form>
                 
        
