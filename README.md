@@ -5,6 +5,9 @@
 ## Quick Start
 
 ```bash
+# go to branch graphql
+git checkout graphql
+
 # Install dependencies (server & client)
 cd server &&npm install
 cd client && npm install
