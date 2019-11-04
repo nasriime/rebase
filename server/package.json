@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix ../client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -12,6 +15,7 @@
   "dependencies": {
     "apollo-server": "^2.9.7",
     "aws-sdk": "^2.562.0",
+    "concurrently": "^5.0.0",
     "graphql": "^14.5.8",
     "graphql-upload": "^8.1.0",
     "mongoose": "^5.7.7"

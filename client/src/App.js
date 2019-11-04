@@ -30,7 +30,7 @@ function App() {
       <ApolloProvider client={client}>
         <ApolloHooksProvider client={client}>
           <Header>
-            <h5>CAFE REACT</h5>
+            <h6>CAFE REACT</h6>
           </Header>
           <Router>
             <Route exact path="/" component={Menu} />
@@ -45,5 +45,5 @@ function App() {
 export default App;
 
 const Header = styled.header`
-  padding: 4px 30px;
+  padding: 13px 107px;
 `;
