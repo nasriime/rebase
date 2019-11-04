@@ -23,9 +23,10 @@ const typeDefs = gql`
   }
 
   type File {
-    filename: String!
-    mimetype: String!
-    encoding: String!
+    filename: String!,
+    mimetype: String!,
+    encoding: String!,
+    location: String!
   }
   
   type Query {
