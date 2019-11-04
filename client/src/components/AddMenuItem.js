@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import { useMutation } from 'react-apollo-hooks';
 import gql from "graphql-tag";
 import useForm from 'react-hook-form';
@@ -15,7 +15,7 @@ const UPLOAD_FILE_STREAM = gql`
 `;
 
 const ADD_ITEM = gql`
-  mutation AddItem($name: String!, $type: String!, $price: String!, $photo: String!){
+  mutation AddItem($name: String!, $type: String!, $price: Int!, $photo: String!){
     addItem(name: $name, type: $type, price: $price, photo: $photo){
       id
       name
@@ -48,7 +48,7 @@ const AddMenuItem =withRouter(({history})=>{
             variables: { 
                 name: data.name,
                 type: data.type,
-                price: data.price,
+                price: Number(data.price),
                 photo
             } 
         })
@@ -60,8 +60,8 @@ const AddMenuItem =withRouter(({history})=>{
             
             <form onSubmit={handleSubmit(onSubmit)} encType={'multipart/form-data'}>
                 <select  name="type" ref={register({ required: true })}>
-                    <option value="main">Main</option>
-                    <option value="side">Side</option>
+                    <option value="Main">Main</option>
+                    <option value="Side">Side</option>
                 </select>
                 {errors.type &&
                     errors.type.type === "required" &&

@@ -18,15 +18,14 @@ const typeDefs = gql`
     id: ID!,
     name: String!,
     type: String!,
-    price: String!,
+    price: Int!,
     photo: String!,
   }
 
   type File {
     filename: String!,
     mimetype: String!,
-    encoding: String!,
-    location: String!
+    encoding: String!
   }
   
   type Query {
@@ -37,7 +36,7 @@ const typeDefs = gql`
   type Mutation {
     singleUpload(file: Upload!): File!,
     singleUploadStream(file: Upload!): File!,
-    addItem(name: String!, type: String!, price: String!, photo: String!): Item!
+    addItem(name: String!, type: String!, price: Int!, photo: String!): Item!
   }
 `;
 
@@ -87,8 +86,8 @@ const resolvers = {
         type: args.type,
         price: args.price,
         photo: args.photo
-    });
-    return item.save();
+      });
+      return item.save();
     }
   },
 };
